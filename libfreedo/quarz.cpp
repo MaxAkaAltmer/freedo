@@ -1,3 +1,26 @@
+/*
+  www.freedo.org
+The first and only working 3DO multiplayer emulator.
+
+The FreeDO licensed under modified GNU LGPL, with following notes:
+
+*   The owners and original authors of the FreeDO have full right to develop closed source derivative work.
+*   Any non-commercial uses of the FreeDO sources or any knowledge obtained by studying or reverse engineering
+    of the sources, or any other material published by FreeDO have to be accompanied with full credits.
+*   Any commercial uses of FreeDO sources or any knowledge obtained by studying or reverse engineering of the sources,
+    or any other material published by FreeDO is strictly forbidden without owners approval.
+
+The above notes are taking precedence over GNU LGPL in conflicting situations.
+
+Project authors:
+
+Alexander Troosh
+Maxim Grishin
+Allen Wright
+John Sammons
+Felix Lazarev
+*/
+
 #include "freedoconfig.h"
 #include "quarz.h"
 #include "types.h"
@@ -7,8 +30,8 @@
 
 int ARM_CLOCK=12500000;
 #define SND_CLOCK       44100
-//#define NTSC_CLOCK      12270000        //818*500(строк)  //15  √ц
-//#define PAL_CLOCK       14750000        //944*625(строк)  //15625 √ц
+//#define NTSC_CLOCK      12270000        //818*500(lines)  //15 KHz
+//#define PAL_CLOCK       14750000        //944*625(lines)  //15625 Hz
 
 
 #pragma pack(push,1)

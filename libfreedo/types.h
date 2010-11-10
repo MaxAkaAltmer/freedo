@@ -1,5 +1,28 @@
+/*
+  www.freedo.org
+The first and only working 3DO multiplayer emulator.
+
+The FreeDO licensed under modified GNU LGPL, with following notes:
+
+*   The owners and original authors of the FreeDO have full right to develop closed source derivative work.
+*   Any non-commercial uses of the FreeDO sources or any knowledge obtained by studying or reverse engineering
+    of the sources, or any other material published by FreeDO have to be accompanied with full credits.
+*   Any commercial uses of FreeDO sources or any knowledge obtained by studying or reverse engineering of the sources,
+    or any other material published by FreeDO is strictly forbidden without owners approval.
+
+The above notes are taking precedence over GNU LGPL in conflicting situations.
+
+Project authors:
+
+Alexander Troosh
+Maxim Grishin
+Allen Wright
+John Sammons
+Felix Lazarev
+*/
+
 /*****************************************************************************
-Copyright (C) 2007-2008 Гришин Максим Леонидович (http://altmer.arts-union.ru)
+Copyright (C) 2007-2008 Maxim Grishin (http://altmer.arts-union.ru)
 *****************************************************************************/
 
 #ifndef TYPES_HEAD_DEFINITION
@@ -28,14 +51,14 @@ typedef  long double real80;
 #ifdef __GNUC__
  #define __fastcall __attribute__((__fastcall__))
 #endif
-//------------------Векторные типы-------------------------------------------
+//------------------Vector types-------------------------------------------
 
 #pragma pack(push,1)
 template <class T> struct point2d { T x,y; };
 template <class T> struct sprite{ point2d<T> ul,dr; };
 #pragma pack(pop)
 //---------------------------------------------------------------------------
-//--------------------Ресурсы------------------------------------------------
+//--------------------resources------------------------------------------------
 #pragma pack(push,1)
 struct imgdata
 {

@@ -1,3 +1,26 @@
+/*
+  www.freedo.org
+The first and only working 3DO multiplayer emulator.
+
+The FreeDO licensed under modified GNU LGPL, with following notes:
+
+*   The owners and original authors of the FreeDO have full right to develop closed source derivative work.
+*   Any non-commercial uses of the FreeDO sources or any knowledge obtained by studying or reverse engineering
+    of the sources, or any other material published by FreeDO have to be accompanied with full credits.
+*   Any commercial uses of FreeDO sources or any knowledge obtained by studying or reverse engineering of the sources,
+    or any other material published by FreeDO is strictly forbidden without owners approval.
+
+The above notes are taking precedence over GNU LGPL in conflicting situations.
+
+Project authors:
+
+Alexander Troosh
+Maxim Grishin
+Allen Wright
+John Sammons
+Felix Lazarev
+*/
+
 // VDLP.cpp: implementation of the CVDLP class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -113,7 +136,7 @@ void _vdl_ProcessVDL( unsigned int addr)
 
 	if((addr&0xfff00000)!=0x200000)
 	{
-		//io_interface(EXT_DEBUG_PRINT,(void*)str.print("!!!!VDLP!!!! Код за границами VRAM!!! 0x%8.8X",addr).CStr());
+                //io_interface(EXT_DEBUG_PRINT,(void*)str.print("!!!!VDLP!!!! VDLP code out of VRAM boundaries!!! 0x%8.8X",addr).CStr());
 	}
 
 }
@@ -189,10 +212,10 @@ __inline void VDLExec()
 							if(ifgnorflag)continue;
 							OUTCONTROLL=cmd;
 
-                                                        //io_interface(EXT_DEBUG_PRINT,(void*)str.print("????VDLP???? Подозрительно... DPComm=0x%8.8X",cmd).CStr());
+                                                        //io_interface(EXT_DEBUG_PRINT,(void*)str.print("????VDLP???? Strange... DPComm=0x%8.8X",cmd).CStr());
 							/*if((OUTCONTROLL>>22)&7)
 							{
-								_3do_DPrint(str.print("????VDLP???? Подозрительно... DPComm=0x%8.8X",cmd).CStr());
+                                                                _3do_DPrint(str.print("????VDLP???? Strange... DPComm=0x%8.8X",cmd).CStr());
 							} */
 							ifgnorflag=OUTCONTROLL&2;
 							//if(!ifgnorflag)break;
@@ -207,7 +230,7 @@ __inline void VDLExec()
 					}
 					else if((cmd&0xff000000)!=0xE1000000 && (cmd&0xC0000000)!=0x80000000)
 					{
-                                             //   io_interface(EXT_DEBUG_PRINT,(void*)str.print("::::VDLP:::: Неизвестная команда... Comm=0x%8.8X",cmd).CStr());
+                                             //   io_interface(EXT_DEBUG_PRINT,(void*)str.print("::::VDLP:::: Unknown opcode... Comm=0x%8.8X",cmd).CStr());
 					}
 
 			}//for(i<nmcmd)
@@ -216,7 +239,7 @@ __inline void VDLExec()
 			MODULO=HOWMAYPIXELEXPECTPERLINE[CLUTDMA.dmaw.modulo];
                         if(MODULO!=320)
                         {
-                               // io_interface(EXT_DEBUG_PRINT,(void*)str.print("::::VDLP:::: Нестандартный экранчик... W=%d, DMAWORD=0x%8.8X",MODULO, CLUTDMA.raw).CStr());
+                               // io_interface(EXT_DEBUG_PRINT,(void*)str.print("::::VDLP:::: Nonstandard modulo... W=%d, DMAWORD=0x%8.8X",MODULO, CLUTDMA.raw).CStr());
                         }
                         doloadclut=((linedelay=CLUTDMA.dmaw.lines)!=0);
 		}

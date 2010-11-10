@@ -1,3 +1,26 @@
+/*
+  www.freedo.org
+The first and only working 3DO multiplayer emulator.
+
+The FreeDO licensed under modified GNU LGPL, with following notes:
+
+*   The owners and original authors of the FreeDO have full right to develop closed source derivative work.
+*   Any non-commercial uses of the FreeDO sources or any knowledge obtained by studying or reverse engineering
+    of the sources, or any other material published by FreeDO have to be accompanied with full credits.
+*   Any commercial uses of FreeDO sources or any knowledge obtained by studying or reverse engineering of the sources,
+    or any other material published by FreeDO is strictly forbidden without owners approval.
+
+The above notes are taking precedence over GNU LGPL in conflicting situations.
+
+Project authors:
+
+Alexander Troosh
+Maxim Grishin
+Allen Wright
+John Sammons
+Felix Lazarev
+*/
+
 
 // CPU.cpp: implementation of the CCPU class.
 //
@@ -64,7 +87,7 @@ const static uint8 arm_mode_table[]=
 #define SCYCLE 1
 #define ICYCLE 1
 
-//--------------------------для условного поля команды-------------------------------------------
+//--------------------------Conditions-------------------------------------------
     //flags - N Z C V  -  31...28
 const static uint16 cond_flags_cross[]={   //((cond_flags_cross[cond_feald]>>flags)&1)  -- пример проверки
     0xf0f0, //EQ - Z set (equal)
@@ -105,12 +128,12 @@ uint32 *profiling3;
 
 struct ARM_CoreState
 {
-//память приставки - имеет смысл сделать ее выделямой------------------------
+//console memories------------------------
     uint8 *Ram;//[RAMSIZE];
     uint8 *Rom;//[ROMSIZE*2];
 	uint8 *NVRam;//[NVRAMSIZE];
 
-//определение регистров ARM60
+//ARM60 registers
 	uint32 USER[16];
 	uint32 CASH[7];
     uint32 SVC[2];
@@ -121,14 +144,14 @@ struct ARM_CoreState
     uint32 SPSR[6];
 	uint32 CPSR;
 
-	bool nFIQ; //внешнее прерывание, устанавливается другими процессорами
-	bool SecondROM;	//селектор ПЗУ (рум и шрифт)
-	bool MAS_Access_Exept;	//заведено для исключений доступа к памяти
+        bool nFIQ; //external interrupt
+        bool SecondROM;	//ROM selector
+        bool MAS_Access_Exept;	//memory exceptions
 };
 #pragma pack(pop)
 
 static ARM_CoreState arm;
-static int CYCLES;	//здесь считаем циклы
+static int CYCLES;	//cycle counter
 
 unsigned int __fastcall rreadusr(unsigned int rn);
 void __fastcall loadusr(unsigned int rn, unsigned int val);
@@ -150,8 +173,8 @@ void __fastcall mwritew(unsigned int addr,unsigned int val);
 #define RON_UND	arm.UND
 #define SPSR	arm.SPSR
 #define CPSR	arm.CPSR
-#define gFIQ	arm.nFIQ //внешнее прерывание, устанавливается другими процессорами
-#define gSecondROM	arm.SecondROM	//селектор ПЗУ (рум и шрифт)
+#define gFIQ	arm.nFIQ
+#define gSecondROM	arm.SecondROM
 
 void* Getp_NVRAM(){return pNVRam;};
 void* Getp_ROMS(){return pRom;};
@@ -789,7 +812,7 @@ void __fastcall  bdt_core(unsigned int opc)
 	else base=RON_USER[rn_ind];
 
 
-	if(opc&(1<<20))	//из памяти в регистр?
+        if(opc&(1<<20))	//memory or register?
 	{
 		if(opc&0x8000)CYCLES-=SCYCLE+NCYCLE;
 
@@ -1503,7 +1526,7 @@ int __fastcall _arm_Execute()
 					decode_swi(cmd);
 					break;
 			//---------
-			default:	//сопроцессор
+                        default:	//coprocessor
 					//!!Exeption!!
                                         //io_interface(EXT_DEBUG_PRINT,(void*)str.print("*PC: 0x%8.8X undefined\n",REG_PC).CStr());
 

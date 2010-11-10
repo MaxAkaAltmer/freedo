@@ -1,3 +1,26 @@
+/*
+  www.freedo.org
+The first and only working 3DO multiplayer emulator.
+
+The FreeDO licensed under modified GNU LGPL, with following notes:
+
+*   The owners and original authors of the FreeDO have full right to develop closed source derivative work.
+*   Any non-commercial uses of the FreeDO sources or any knowledge obtained by studying or reverse engineering
+    of the sources, or any other material published by FreeDO have to be accompanied with full credits.
+*   Any commercial uses of FreeDO sources or any knowledge obtained by studying or reverse engineering of the sources,
+    or any other material published by FreeDO is strictly forbidden without owners approval.
+
+The above notes are taking precedence over GNU LGPL in conflicting situations.
+
+Project authors:
+
+Alexander Troosh
+Maxim Grishin
+Allen Wright
+John Sammons
+Felix Lazarev
+*/
+
 // Madam.cpp: implementation of the CMadam class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -619,7 +642,7 @@ void __fastcall _madam_Poke(unsigned int addr, unsigned int val)
 
     case 0x7fc:
 
-		mregs[0x7fc]=0; // Ours matrix engine already ready
+                mregs[0x7fc]=0; // Our matrix engine always ready
 
 		static int Rez0T,Rez1T,Rez2T,Rez3T;
                // io_interface(EXT_DEBUG_PRINT,(void*)str.print("MADAM Write madam[0x%X] = 0x%8.8X\n",addr,val).CStr());
