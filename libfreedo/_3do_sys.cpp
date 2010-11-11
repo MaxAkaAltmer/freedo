@@ -142,7 +142,7 @@ void _3do_InternalFrame(int cicles)
 
 void __fastcall _3do_Frame(VDLFrame *frame, bool __scipframe=false)
 {
-int i,line,cnt=0;
+int i,cnt=0;
 
         curr_frame=frame;
         scipframe=__scipframe;
@@ -216,7 +216,7 @@ bool _3do_Load(void *buff)
 {
  unsigned char *data=(unsigned char*)buff;
  int *indexes=(int*)buff;
-        if(indexes[0]!=0x97970101)return false;
+        if((unsigned int)indexes[0]!=0x97970101)return false;
 
         _arm_Load(&data[indexes[1]]);
         _vdl_Load(&data[indexes[2]]);
