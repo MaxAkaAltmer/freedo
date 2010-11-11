@@ -24,12 +24,15 @@ Felix Lazarev
 #ifndef FREEDOCONFIG_H
 #define FREEDOCONFIG_H
 
-#ifdef _WIN32
+#ifdef __MSVC__
 #include <stdafx.h>
 #include <windows.h>
 #else
 #include <stdlib.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 
 
 extern bool __temporalfixes;

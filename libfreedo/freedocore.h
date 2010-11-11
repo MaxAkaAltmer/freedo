@@ -79,7 +79,7 @@ typedef void* (*_ext_Interface)(int, void*);
 #define FDP_SET_TEXQUALITY      15
 #define FDP_GETP_WRCOUNT        16
 
-#ifdef _WIN32
+#ifdef __MSVC__
 
 #ifdef FREEDOCORE_EXPORTS
 #define FREEDOCORE_API __declspec(dllexport)
@@ -99,7 +99,7 @@ extern "C"
         FREEDOCORE_API void* _freedo_Interface(int procedure, void *datum=0);
 };
 
-#ifdef _WIN32
+#ifdef __MSVC__
 #ifndef FREEDOCORE_EXPORTS
 #pragma comment(lib, "freedocore.lib")
 #endif
