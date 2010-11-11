@@ -38,7 +38,10 @@ typedef  int int32;
 typedef  char int8;
 typedef  short int16;
 typedef  signed long long int64;
+
+#ifndef __int64
 typedef  signed long long __int64;
+#endif
 
 typedef  float real32;
 typedef  double real64;
