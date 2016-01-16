@@ -526,7 +526,7 @@ void _emulation_game_open(QString game)
                game_hand.read(data,sizeof(FS3DO_DiscLabel));
 
                lp=(FS3DO_DiscLabel*)data;
-               _game_sector_size=lp->dl_VolumeBlockCount;
+               _game_sector_size=lp->sectorCount;
 
                game_hand.seek(_game_data_offset);
 
