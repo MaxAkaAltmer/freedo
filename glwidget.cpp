@@ -1,5 +1,11 @@
+#ifdef __APPLE__
+#include <glu.h>
+#include <glext.h>
+#else
 #include <GL/glu.h>
 #include <GL/glext.h>
+#endif
+
 #include <QtGui>
 #include "glwidget.h"
 #include "emuthread.h"
