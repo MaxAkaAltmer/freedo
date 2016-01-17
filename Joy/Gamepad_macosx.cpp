@@ -20,7 +20,7 @@
   Alex Diener adiener@sacredsoftware.net
 */
 
-#include "gamepad/Gamepad.h"
+#include "Gamepad.h"
 #include <IOKit/hid/IOHIDLib.h>
 #include <limits.h>
 #include <mach/mach.h>
@@ -102,7 +102,7 @@ static void queueInputEvent(EventDispatcher * dispatcher, const char * eventType
 	
 	if (inputEventCount >= inputEventQueueSize) {
 		inputEventQueueSize = inputEventQueueSize == 0 ? 1 : inputEventQueueSize * 2;
-		inputEventQueue = realloc(inputEventQueue, sizeof(struct Gamepad_queuedEvent) * inputEventQueueSize);
+        inputEventQueue = (Gamepad_queuedEvent*)realloc(inputEventQueue, sizeof(struct Gamepad_queuedEvent) * inputEventQueueSize);
 	}
 	inputEventQueue[inputEventCount++] = queuedEvent;
 }
@@ -110,7 +110,7 @@ static void queueInputEvent(EventDispatcher * dispatcher, const char * eventType
 static void queueAxisEvent(struct Gamepad_device * device, double timestamp, unsigned int axisID, float value) {
 	struct Gamepad_axisEvent * axisEvent;
 	
-	axisEvent = malloc(sizeof(struct Gamepad_axisEvent));
+    axisEvent = (Gamepad_axisEvent*)malloc(sizeof(struct Gamepad_axisEvent));
 	axisEvent->device = device;
 	axisEvent->timestamp = timestamp;
 	axisEvent->axisID = axisID;
@@ -122,7 +122,7 @@ static void queueAxisEvent(struct Gamepad_device * device, double timestamp, uns
 static void queueButtonEvent(struct Gamepad_device * device, double timestamp, unsigned int buttonID, bool down) {
 	struct Gamepad_buttonEvent * buttonEvent;
 	
-	buttonEvent = malloc(sizeof(struct Gamepad_buttonEvent));
+    buttonEvent = (Gamepad_buttonEvent*)malloc(sizeof(struct Gamepad_buttonEvent));
 	buttonEvent->device = device;
 	buttonEvent->timestamp = timestamp;
 	buttonEvent->buttonID = buttonID;
@@ -143,8 +143,8 @@ static void onDeviceValueChanged(void * context, IOReturn result, void * sender,
 		mach_timebase_info(&timebaseInfo);
 	}
 	
-	deviceRecord = context;
-	hidDeviceRecord = deviceRecord->privateData;
+    deviceRecord = (Gamepad_device*)context;
+    hidDeviceRecord = (Gamepad_devicePrivate*)deviceRecord->privateData;
 	element = IOHIDValueGetElement(value);
 	cookie = IOHIDElementGetCookie(element);
 	
@@ -264,32 +264,32 @@ static void onDeviceMatched(void * context, IOReturn result, void * sender, IOHI
 	char * description;
 	struct Gamepad_queuedEvent queuedEvent;
 	
-	deviceRecord = malloc(sizeof(struct Gamepad_device));
+    deviceRecord = (Gamepad_device*)malloc(sizeof(struct Gamepad_device));
 	deviceRecord->deviceID = nextDeviceID++;
 	deviceRecord->vendorID = IOHIDDeviceGetVendorID(device);
 	deviceRecord->productID = IOHIDDeviceGetProductID(device);
 	deviceRecord->numAxes = 0;
 	deviceRecord->numButtons = 0;
 	deviceRecord->eventDispatcher = EventDispatcher_create(deviceRecord);
-	devices = realloc(devices, sizeof(struct Gamepad_device *) * (numDevices + 1));
+    devices = (Gamepad_device**)realloc(devices, sizeof(struct Gamepad_device *) * (numDevices + 1));
 	devices[numDevices++] = deviceRecord;
 	
-	hidDeviceRecord = malloc(sizeof(struct Gamepad_devicePrivate));
+    hidDeviceRecord = (Gamepad_devicePrivate*)malloc(sizeof(struct Gamepad_devicePrivate));
 	hidDeviceRecord->deviceRef = device;
 	hidDeviceRecord->axisElements = NULL;
 	hidDeviceRecord->buttonElements = NULL;
 	deviceRecord->privateData = hidDeviceRecord;
 	
-	cfProductName = IOHIDDeviceGetProperty(device, CFSTR(kIOHIDProductKey));
+    cfProductName = (CFStringRef)IOHIDDeviceGetProperty(device, CFSTR(kIOHIDProductKey));
 	if (cfProductName == NULL || CFGetTypeID(cfProductName) != CFStringGetTypeID()) {
-		description = malloc(strlen("[Unknown]" + 1));
+        description = (char*)malloc(strlen("[Unknown]" + 1));
 		strcpy(description, "[Unknown]");
 		
 	} else {
 		const char * cStringPtr;
 		
 		cStringPtr = CFStringGetCStringPtr(cfProductName, CFStringGetSmallestEncoding(cfProductName));
-		description = malloc(strlen(cStringPtr + 1));
+        description = (char*)malloc(strlen(cStringPtr + 1));
 		strcpy(description, cStringPtr);
 	}
 	deviceRecord->description = description;
@@ -303,7 +303,7 @@ static void onDeviceMatched(void * context, IOReturn result, void * sender, IOHI
 		if (type == kIOHIDElementTypeInput_Misc ||
 		    type == kIOHIDElementTypeInput_Axis) {
 			
-			hidDeviceRecord->axisElements = realloc(hidDeviceRecord->axisElements, sizeof(struct HIDGamepadAxis) * (deviceRecord->numAxes + 1));
+            hidDeviceRecord->axisElements = (HIDGamepadAxis*)realloc(hidDeviceRecord->axisElements, sizeof(struct HIDGamepadAxis) * (deviceRecord->numAxes + 1));
 			hidDeviceRecord->axisElements[deviceRecord->numAxes].cookie = IOHIDElementGetCookie(element);
 			hidDeviceRecord->axisElements[deviceRecord->numAxes].logicalMin = IOHIDElementGetLogicalMin(element);
 			hidDeviceRecord->axisElements[deviceRecord->numAxes].logicalMax = IOHIDElementGetLogicalMax(element);
@@ -313,21 +313,21 @@ static void onDeviceMatched(void * context, IOReturn result, void * sender, IOHI
 			deviceRecord->numAxes++;
 			
 			if (hidDeviceRecord->axisElements[deviceRecord->numAxes - 1].isHatSwitch) {
-				hidDeviceRecord->axisElements = realloc(hidDeviceRecord->axisElements, sizeof(struct HIDGamepadAxis) * (deviceRecord->numAxes + 1));
+                hidDeviceRecord->axisElements = (HIDGamepadAxis*)realloc(hidDeviceRecord->axisElements, sizeof(struct HIDGamepadAxis) * (deviceRecord->numAxes + 1));
 				hidDeviceRecord->axisElements[deviceRecord->numAxes].isHatSwitchSecondAxis = true;
 				deviceRecord->numAxes++;
 			}
 			
 		} else if (type == kIOHIDElementTypeInput_Button) {
-			hidDeviceRecord->buttonElements = realloc(hidDeviceRecord->buttonElements, sizeof(struct HIDGamepadButton) * (deviceRecord->numButtons + 1));
+            hidDeviceRecord->buttonElements = (HIDGamepadButton*)realloc(hidDeviceRecord->buttonElements, sizeof(struct HIDGamepadButton) * (deviceRecord->numButtons + 1));
 			hidDeviceRecord->buttonElements[deviceRecord->numButtons].cookie = IOHIDElementGetCookie(element);
 			deviceRecord->numButtons++;
 		}
 	}
 	CFRelease(elements);
 	
-	deviceRecord->axisStates = calloc(sizeof(float), deviceRecord->numAxes);
-	deviceRecord->buttonStates = calloc(sizeof(bool), deviceRecord->numButtons);
+    deviceRecord->axisStates = (float*)calloc(sizeof(float), deviceRecord->numAxes);
+    deviceRecord->buttonStates = (bool*)calloc(sizeof(bool), deviceRecord->numButtons);
 	
 	IOHIDDeviceRegisterInputValueCallback(device, onDeviceValueChanged, deviceRecord);
 	
@@ -337,7 +337,7 @@ static void onDeviceMatched(void * context, IOReturn result, void * sender, IOHI
 	
 	if (deviceEventCount >= deviceEventQueueSize) {
 		deviceEventQueueSize = deviceEventQueueSize == 0 ? 1 : deviceEventQueueSize * 2;
-		deviceEventQueue = realloc(deviceEventQueue, sizeof(struct Gamepad_queuedEvent) * deviceEventQueueSize);
+        deviceEventQueue = (Gamepad_queuedEvent*)realloc(deviceEventQueue, sizeof(struct Gamepad_queuedEvent) * deviceEventQueueSize);
 	}
 	deviceEventQueue[deviceEventCount++] = queuedEvent;
 }
