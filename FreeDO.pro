@@ -78,3 +78,11 @@ linux {
     SOURCES += joy/Gamepad_linux.cpp
 }
 
+macx {
+    LIBS += -ldl
+    LIBS += -framework IOKit
+    LIBS += -framework CoreFoundation
+    LIBS += -framework openal
+
+    SOURCES += joy/Gamepad_macosx.cpp
+}
