@@ -1337,7 +1337,7 @@ void* _xbplug_MainDevice(int proc, void* data)
 		        isodrive.InitCD();
 		break;
 	case XBP_SET_COMMAND:
-		isodrive.SendCommand((unsigned int)data);
+        isodrive.SendCommand((size_t)data);
 		break;
 	case XBP_FIQ:
 		return (void*)isodrive.TestFIQ();
@@ -1346,7 +1346,7 @@ void* _xbplug_MainDevice(int proc, void* data)
 	case XBP_GET_STATUS:
 		return (void*)isodrive.GetStatusFifo();
 	case XBP_SET_POLL:
-		isodrive.SetPoll((unsigned int)data);
+        isodrive.SetPoll((size_t)data);
 		break;
 	case XBP_GET_POLL:
 		return (void*)isodrive.GetPoll();

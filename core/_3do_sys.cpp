@@ -131,7 +131,7 @@ void _3do_InternalFrame(int cicles)
                         if(line==_clio_v1line())
                         {
                                 _clio_GenerateFiq(1<<1,0);
-                                _madam_KeyPressed((unsigned char*)io_interface(EXT_GETP_PBUSDATA,NULL),(int)io_interface(EXT_GET_PBUSLEN,NULL));
+                                _madam_KeyPressed((unsigned char*)io_interface(EXT_GETP_PBUSDATA,NULL),(ptrdiff_t)io_interface(EXT_GET_PBUSLEN,NULL));
                                 curr_frame->srcw=320;
                                 curr_frame->srch=240;
                                 if(!scipframe)curr_frame=(VDLFrame*)io_interface(EXT_SWAPFRAME,curr_frame);
@@ -247,7 +247,7 @@ void _3do_Read2048(void *buff)
 
 unsigned int _3do_DiscSize()
 {
-        return (unsigned int)io_interface(EXT_GET_DISC_SIZE,NULL);
+        return (size_t)io_interface(EXT_GET_DISC_SIZE,NULL);
 }
 
 FREEDOCORE_API void* _freedo_Interface(int procedure, void *datum)
@@ -289,7 +289,7 @@ int line;
          case FDP_FREEDOCORE_VERSION:
                 return (void*)0x20008;
          case FDP_SET_ARMCLOCK:
-                ARM_CLOCK=(int)datum;
+                ARM_CLOCK=(ptrdiff_t)datum;
                 break;
         };
 

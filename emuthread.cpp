@@ -594,7 +594,7 @@ void* with_freedo_interface(int proc, void *datum)
          case EXT_SWAPFRAME:
                 return _3do_SwapFrame((VDLFrame*)datum);
          case EXT_PUSH_SAMPLE:
-                _3do_PushSample((uint32)datum);
+                _3do_PushSample((size_t)datum);
                 break;
          case EXT_GET_PBUSLEN:
                 return (void*)_3do_GetPBUSLeinght();
@@ -610,7 +610,7 @@ void* with_freedo_interface(int proc, void *datum)
          case EXT_GET_DISC_SIZE:
                 return (void*)_emulation_game_sector_count();
          case EXT_ON_SECTOR:
-                _emulation_game_on_sector((int)datum);
+                _emulation_game_on_sector((ptrdiff_t)datum);
                 break;
         };
         return NULL;
