@@ -38,6 +38,10 @@ Felix Lazarev
 #include <windows.h>
 #endif
 
+#ifdef __APPLE__
+#include <stddef.h>
+#endif
+
 _ext_Interface  io_interface;
 
 extern void* Getp_NVRAM();
