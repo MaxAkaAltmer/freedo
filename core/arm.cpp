@@ -1714,7 +1714,12 @@ unsigned int __fastcall mreadw(unsigned int addr)
 		}
 	}
 
-    if (!((index=(addr^0x03000000)) & ~0xFFFFF)) //rom
+    if (!((index=(addr^0x06000000)) & ~0xFFFFF)) //pal rom
+    {
+        return *(unsigned int*)(pRom+index);
+    }
+
+    if (!((index=(addr^0x03000000)) & ~0xFFFFF)) //ntsc rom
     {
         if(!gSecondROM) // 2nd rom
 		{
@@ -1794,7 +1799,11 @@ unsigned int __fastcall mreadb(unsigned int addr)
     {
         return _mem_read8(addr^3);
     }
-    else if (!((index=(addr^0x03000003)) & ~0xFFFFF)) //rom
+    else if (!((index=(addr^0x06000003)) & ~0xFFFFF)) //pal rom
+    {
+        return pRom[index];
+    }
+    else if (!((index=(addr^0x03000003)) & ~0xFFFFF)) //ntsc rom
     {
 		  if(!gSecondROM) // 2nd rom
 		  {
